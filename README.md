@@ -1,8 +1,9 @@
-# 搭建热更新服务器
+# 搭建热更新服务器技术栈
 * 客户端: cocos creator 2.1.1 + AssetsManager
 * web服务器: express
 
 ## 1)总体思路
+```
 step 1.初始化热更新管理器，并且设置存储热更下来的文件路径
 step 2.点击按钮进行热更： 加载本地文件列表; 里面存储的有远程最新文件，因此知道更新什么东西
 step 3.注册是否可以热更结果的回调
@@ -12,19 +13,23 @@ step 6 重新注册开始真正更新
 step 7.热更事件回调
 step 8. 设置热更路径为第一搜索路径
 step 9.热更完成重启游戏
-
+```
 
 ## 2)官方脚本使用
+```
 node version_generator.js -v 1.0.0 -u http://your-server-address/tutorial-hot-update/remote-assets/ -s native/package/ -d assets/
+```
 
 ## 3)version_generator.js脚本参数解释
+```
 -v: 生成的最新的版本号
 -u: 服务器最新资源存放的静态路径
 -s: 准备生成version.manifest和project.manifest的src res所在的路径
 -d: 生成的version.manifest和project.manifest所在的文件目录
-
+```
 
 ## 4)得到服务器地址：192.168.3.2
+```
 ➜  ~ ifconfig
 lo0: flags=8049<UP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
 	options=3<RXCSUM,TXCSUM>
@@ -44,16 +49,19 @@ en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
 	status: active
 
 因此:inet 192.168.3.2得到ip地址
+```
 
 ## 5)android热更环境总体流程：
-1)生成最原始版本manifest文件
+*  1)生成最原始版本manifest文件
+
 ```
 node version_generator.js -v 1.0.1 -u http://192.168.3.2:5555/remote-assets/ -s /Users/jianan/Documents/hotupdatev211_demo/build/jsb-default -d assets/
 ```
 
-2)在/Users/jianan/Documents/hotupdatev211_demo/build/jsb-default中构建生成src res
+*  2)在/Users/jianan/Documents/hotupdatev211_demo/build/jsb-default中构建生成src res
 
-3)修改:/Users/jianan/Documents/hotupdatev211_demo/build/jsb-default/main.js文件
+*  3)修改:/Users/jianan/Documents/hotupdatev211_demo/build/jsb-default/main.js文件 
+
 ```
 在最开头加内容:
 if (jsb) {  // cc.sys.jsb发现在mac模拟器上找不到,因此写jsb
@@ -64,18 +72,20 @@ if (jsb) {  // cc.sys.jsb发现在mac模拟器上找不到,因此写jsb
 }
 ```
 
-4)打android包
+*  4)打android包
 
-5)修改一点游戏内容(脚本、场景、资源均可以)
+*  5)修改一点游戏内容(脚本、场景、资源均可以)
 
-6)构建得到新的资源
+*  6)构建得到新的资源
 
-7)生成更新的manifest文件
+*  7)生成更新的manifest文件
+
 ```
 node version_generator.js -v 1.0.5 -u http://192.168.3.2:5555/remote-assets/ -s /Users/jianan/Documents/hotupdatev211_demo/build/jsb-default -d assets/
 ```
 
-8)提交4个文件到web服务器
+*  8)提交4个文件到web服务器
+
 ```
 /Users/jianan/Documents/hotupdatev211_demo/build/jsb-default/src
 /Users/jianan/Documents/hotupdatev211_demo/build/jsb-default/res
@@ -83,13 +93,14 @@ node version_generator.js -v 1.0.5 -u http://192.168.3.2:5555/remote-assets/ -s 
 /Users/jianan/Documents/hotupdatev211_demo/assets/project.manifest
 ```
 
-9)启动web服务器
+*  9)启动web服务器
+
 ```
 ➜  web-server git:(master) ✗ node app.js
 热更新服务器已经启动! 测试一下: http://192.168.3.2:5555/remote-assets/version.manifest
 ```
 
-10)打开apk，检查更新即可
+*  10)打开apk，检查更新即可
 
 5)更新效果
 *  最开始的登陆界面图
