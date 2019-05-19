@@ -15,7 +15,7 @@ cc.Class({
         }
 
         var searchPaths = jsb.fileUtils.getSearchPaths();
-        cc.log("重点:可写路径 searchPaths=", getSearchPaths);
+        cc.log("重点:可写路径 searchPaths=", searchPaths);
 
         this._storagePath = ((jsb.fileUtils ? jsb.fileUtils.getWritablePath() : '/') + "hotupdate"); // 下载的热更文件的存储路径，目录不存在则创建
         cc.log("热更下来文件存储的可写路径 storagePath=", this._storagePath);
