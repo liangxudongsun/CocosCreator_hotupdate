@@ -1264,7 +1264,7 @@
     },
     "component": "",
     "_componentId": "3293dvZzv5JR4sMcjMUdrQx",
-    "handler": "",
+    "handler": "onClick",
     "customEventData": "btn_update"
   },
   {
@@ -1305,7 +1305,7 @@
       "__id__": 2
     },
     "_enabled": true,
-    "mainfestUrl": {
+    "manifestUrl": {
       "__uuid__": "a624e4c2-ff82-4a99-820e-ad5d8e0edfe2"
     },
     "lbl_update_status": {

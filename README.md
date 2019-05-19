@@ -67,3 +67,7 @@ Simulator: JS: need restart!!! searchPaths=
 
 test searchPaths= /Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/Simulator/debugruntime/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/
 
+
+9)mac模拟器测试热更
+open /Users/jianan/Documents/hotupdatev211_demo/build/jsb-default/simulator/mac/hotupdatev211_demo-desktop.app/Contents/MacOS/
+
