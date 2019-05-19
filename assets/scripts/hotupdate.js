@@ -37,7 +37,7 @@ cc.Class({
             }
         };
 
-        this._am = new jsb.AssetsManager('', this._storagePath, this.versionCompareHandle);
+        this._am = new jsb.AssetsManager('', this._storagePath, this.versionCompareHandle); // new 一个热更新器
 
         this._am.setVerifyCallback(function(path, asset){
             var compressed = asset.compressed;
@@ -47,10 +47,10 @@ cc.Class({
             return true;
         });
 
-        this.lbl_update_status.string = "点击检查热更情况...";
+        this.lbl_update_status.string = "点击检查热更情况";
     },
 
-    checkUpdate: function(){ // step 2.加载本地文件列表; 里面存储的有远程最新文件，因此知道更新什么东西; 点击按钮进行热更
+    checkUpdate: function(){ // step 2.点击按钮进行热更： 加载本地文件列表; 里面存储的有远程最新文件，因此知道更新什么东西
         if(this._updating){
             this.lbl_update_status.string = "正在热更中,不要重复点击";
             return;
