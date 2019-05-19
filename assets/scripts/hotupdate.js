@@ -14,6 +14,9 @@ cc.Class({
             return;
         }
 
+        var searchPaths = jsb.fileUtils.getSearchPaths();
+        cc.log("重点:可写路径 searchPaths=", getSearchPaths);
+
         this._storagePath = ((jsb.fileUtils ? jsb.fileUtils.getWritablePath() : '/') + "hotupdate"); // 下载的热更文件的存储路径，目录不存在则创建
         cc.log("热更下来文件存储的可写路径 storagePath=", this._storagePath);
 
@@ -51,6 +54,10 @@ cc.Class({
     },
 
     checkUpdate: function(){ // step 2.点击按钮进行热更： 加载本地文件列表; 里面存储的有远程最新文件，因此知道更新什么东西
+        if(!cc.sys.isNative){
+            return;
+        }
+
         if(this._updating){
             this.lbl_update_status.string = "正在热更中,不要重复点击";
             return;
@@ -162,10 +169,12 @@ cc.Class({
         }
 
         if(needRestart){
-            var searchPaths = jsb.fileUtils.getSeatchPaths();
-            var newPaths = this._am.getLocalManifest().getSeatchPaths(); // 热更路径
+            var searchPaths = jsb.fileUtils.getSearchPaths();
+            var newPaths = this._am.getLocalManifest().getSearchPaths(); // 热更路径
             cc.log("热更存储路径newPaths=", newPaths);
             Array.prototype.unshift.apply(searchPaths, newPaths);  // step 6. 设置热更路径为第一搜索路径
+             //搜索路径序列化
+             cc.sys.localStorage.setItem('HotUpdateSearchPaths', JSON.stringify(searchPaths));
             jsb.fileUtils.setSearchPaths(searchPaths);
             cc.audioEngine.stopAll();
             cc.game.restart(); // step 7.热更完成重启游戏

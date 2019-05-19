@@ -71,3 +71,11 @@ test searchPaths= /Applications/CocosCreator_v_2_1_1.app/Contents/Resources/coco
 9)mac模拟器测试热更
 open /Users/jianan/Documents/hotupdatev211_demo/build/jsb-default/simulator/mac/hotupdatev211_demo-desktop.app/Contents/MacOS/
 
+10)
+if (jsb) {
+    var hotUpdateSearchPaths = localStorage.getItem('HotUpdateSearchPaths');
+    if (hotUpdateSearchPaths) {
+        jsb.fileUtils.setSearchPaths(JSON.parse(hotUpdateSearchPaths));
+    }
+}
+
