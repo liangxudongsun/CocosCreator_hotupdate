@@ -74,6 +74,26 @@ cc.Class({
         this._updating = true;
     },
 
+    findNewVersion: function(){
+        this._am.setEventCallback(null);
+        this._updating = false;
+    },
+
+    realUpdate: function(){
+        if(this._am && !this._updating){
+            this._am.setEventCallback(this.checkCb.bind(this));
+            if(this._am.getState() == jsb.AssetsManager.State.UNINITED){
+                var url = this.manifestUrl.nativeUrl;
+                if(cc.loader.md5Pipe){
+                    url = cc.loader.md5Pipe.transformURL(url);
+                    this._am.loadLocalManifest(url);
+                }
+            }
+            this._am.update();
+            this._updating = true;
+        }
+    },
+
     checkCb: function(event){ // step 5.热更事件回调
         cc.log("code =", event.getEventCode());
 
@@ -133,6 +153,8 @@ cc.Class({
 
             case jsb.EventAssetsManager.NEW_VERSION_FOUND: // 进大厅就更新了能用上不??
                 this.lbl_update_status.string = "发现新版本，点击更新!";
+                this.findNewVersion();
+                this.realUpdate();
                 break;
 
             default:
