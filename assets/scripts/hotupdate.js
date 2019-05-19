@@ -15,7 +15,7 @@ cc.Class({
         }
 
         this._storagePath = ((jsb.fileUtils ? jsb.fileUtils.getWritablePath() : '/') + "hotupdate"); // 下载的热更文件的存储路径，目录不存在则创建
-        cc.log("热更路径 storagePath=", this._storagePath);
+        cc.log("热更下来文件存储的可写路径 storagePath=", this._storagePath);
 
         this.versionCompareHandle = function(versionA, versionB){
             var vA = versionA.split('.');
@@ -68,13 +68,13 @@ cc.Class({
             this.lbl_update_status.string = "本地热更新manifest文件加载失败!";
             return;
         }
-        this._am.setEventCallback(this.checkCb.bind(this)); // 注册是否可以热更结果的回调
-        this._am.checkUpdate(); // step 3.开始检查更新，所以可以先弹出: 发现新版本
+        this._am.setEventCallback(this.checkCb.bind(this)); // step 3.注册是否可以热更结果的回调
+        this._am.checkUpdate(); // step 4.开始检查更新，所以可以先弹出: 发现新版本
 
         this._updating = true;
     },
 
-    checkCb: function(event){ // step 4.热更事件回调
+    checkCb: function(event){ // step 5.热更事件回调
         cc.log("code =", event.getEventCode());
 
         var needRestart = false;
