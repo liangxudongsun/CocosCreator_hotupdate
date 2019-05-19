@@ -1,32 +1,30 @@
+# 搭建热更新服务器
+* 客户端: cocos creator 2.1.1 + AssetsManager
+* web服务器: express
 
-1)官方脚本使用
+## 1)总体思路
+step 1.初始化热更新管理器，并且设置存储热更下来的文件路径
+step 2.点击按钮进行热更： 加载本地文件列表; 里面存储的有远程最新文件，因此知道更新什么东西
+step 3.注册是否可以热更结果的回调
+step 4.开始检查更新，所以可以先弹出: 发现新版本
+step 5 发现新版本后清理回调
+step 6 重新注册开始真正更新
+step 7.热更事件回调
+step 8. 设置热更路径为第一搜索路径
+step 9.热更完成重启游戏
+
+
+## 2)官方脚本使用
 node version_generator.js -v 1.0.0 -u http://your-server-address/tutorial-hot-update/remote-assets/ -s native/package/ -d assets/
 
-2)部署到我的web服务器上的更改参数后的脚本
-node version_generator.js -v 1.0.1 -u http://192.168.3.2:5555/remote-assets/ -s /Users/jianan/Documents/hotupdatev211_demo/build/jsb-default -d assets/
-
-node version_generator.js -v 1.0.5 -u http://192.168.3.2:5555/remote-assets/ -s /Users/jianan/Documents/hotupdatev211_demo/build/jsb-default -d assets/
-
-3)脚本参数解释
+## 3)version_generator.js脚本参数解释
 -v: 生成的最新的版本号
 -u: 服务器最新资源存放的静态路径
 -s: 准备生成version.manifest和project.manifest的src res所在的路径
 -d: 生成的version.manifest和project.manifest所在的文件目录
 
-4)更新流程对比原理
-当前版本的信息在:
-	assets下面的version.manifest 和 assets下面的project.manifest, 是根据build下面的src res生成的当前的版本信息，在热更新启动后，就知道当前的版本的信息
 
-服务器上存储的remote-assets里面有：
-	jsb-adapter.zip
-	src
-	res
-	version.manifest
-	project.manifest
-
-这样就可以根据：version.manifest和project.manifest来对比进行更新，将需要下载得文件放在可写目录下
-
-5)得到服务器地址：192.168.3.2
+## 4)得到服务器地址：192.168.3.2
 ➜  ~ ifconfig
 lo0: flags=8049<UP,LOOPBACK,RUNNING,MULTICAST> mtu 16384
 	options=3<RXCSUM,TXCSUM>
@@ -45,37 +43,65 @@ en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500
 	media: autoselect (100baseTX <full-duplex,flow-control>)
 	status: active
 
-6)热更新服务器启动
-➜  web-server node app.js
-热更新服务器已经启动!
+因此:inet 192.168.3.2得到ip地址
 
-http://192.168.3.2:5555/remote-assets/version.manifest
+## 5)android热更环境总体流程：
+1)生成最原始版本manifest文件
+```
+node version_generator.js -v 1.0.1 -u http://192.168.3.2:5555/remote-assets/ -s /Users/jianan/Documents/hotupdatev211_demo/build/jsb-default -d assets/
+```
 
-7)
-/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/blackjack-remote-asset
+2)在/Users/jianan/Documents/hotupdatev211_demo/build/jsb-default中构建生成src res
 
-8)
-Simulator: JS: need restart!!! searchPaths= 
-
-
-/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/blackjack-remote-asset/,
-
-/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/blackjack-remote-asset/,
-
-
-/Users/jianan/Documents/hotupdate/tutorial-hot-update/library/imports/ef/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/Simulator/debugruntime/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/
-
-test searchPaths= /Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/Simulator/debugruntime/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/,/Applications/CocosCreator_v_2_1_1.app/Contents/Resources/cocos2d-x/simulator/mac/Simulator.app/Contents/Resources/
-
-
-9)mac模拟器测试热更
-open /Users/jianan/Documents/hotupdatev211_demo/build/jsb-default/simulator/mac/hotupdatev211_demo-desktop.app/Contents/MacOS/
-
-10)
-if (jsb) {
+3)修改:/Users/jianan/Documents/hotupdatev211_demo/build/jsb-default/main.js文件
+```
+在最开头加内容:
+if (jsb) {  // cc.sys.jsb发现在mac模拟器上找不到,因此写jsb
     var hotUpdateSearchPaths = localStorage.getItem('HotUpdateSearchPaths');
     if (hotUpdateSearchPaths) {
         jsb.fileUtils.setSearchPaths(JSON.parse(hotUpdateSearchPaths));
     }
 }
+```
+
+4)打android包
+
+5)修改一点游戏内容(脚本、场景、资源均可以)
+
+6)构建得到新的资源
+
+7)生成更新的manifest文件
+```
+node version_generator.js -v 1.0.5 -u http://192.168.3.2:5555/remote-assets/ -s /Users/jianan/Documents/hotupdatev211_demo/build/jsb-default -d assets/
+```
+
+8)提交4个文件到web服务器
+```
+/Users/jianan/Documents/hotupdatev211_demo/build/jsb-default/src
+/Users/jianan/Documents/hotupdatev211_demo/build/jsb-default/res
+/Users/jianan/Documents/hotupdatev211_demo/assets/version.manifest
+/Users/jianan/Documents/hotupdatev211_demo/assets/project.manifest
+```
+
+9)启动web服务器
+```
+➜  web-server git:(master) ✗ node app.js
+热更新服务器已经启动! 测试一下: http://192.168.3.2:5555/remote-assets/version.manifest
+```
+
+10)打开apk，检查更新即可
+
+5)更新效果
+*  最开始的登陆界面图
+
+![](./imgs/1.jpg)
+
+*  登陆界面更新了一张图片和脚本
+
+![](./imgs/2.jpg)
+
+*  游戏界面更新
+
+![](./imgs/3.jpg)
+
 

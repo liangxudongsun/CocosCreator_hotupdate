@@ -72,6 +72,9 @@
         },
         {
           "__id__": 6
+        },
+        {
+          "__id__": 7
         }
       ],
       "_components": [
@@ -198,7 +201,7 @@
     },
     {
       "__type__": "cc.Node",
-      "_name": "hot",
+      "_name": "New Label",
       "_parent": {
         "__id__": 2
       },
@@ -210,27 +213,70 @@
             "__id__": 6
           },
           "_useOriginalSize": false,
-          "_string": "热更过来的",
-          "_N$string": "热更过来的",
+          "_string": "这是热更内容",
+          "_N$string": "这是热更内容",
           "_N$horizontalAlign": 1,
           "_N$verticalAlign": 1
         }
       ],
       "_color": {
         "__type__": "cc.Color",
-        "r": 216,
-        "g": 47,
-        "b": 47
+        "r": 150,
+        "g": 65,
+        "b": 65
       },
       "_contentSize": {
         "__type__": "cc.Size",
-        "width": 200,
+        "width": 240,
         "height": 50.4
       },
       "_position": {
         "__type__": "cc.Vec3",
-        "x": -3.012,
-        "y": -173.176
+        "x": -15.059,
+        "y": -182.212
+      },
+      "_scale": {
+        "__type__": "cc.Vec3",
+        "x": 1,
+        "y": 1,
+        "z": 1
+      }
+    },
+    {
+      "__type__": "cc.Node",
+      "_name": "New Label",
+      "_parent": {
+        "__id__": 2
+      },
+      "_level": 1,
+      "_components": [
+        {
+          "__type__": "cc.Label",
+          "node": {
+            "__id__": 7
+          },
+          "_useOriginalSize": false,
+          "_string": "修改了一些bug",
+          "_N$string": "修改了一些bug",
+          "_N$horizontalAlign": 1,
+          "_N$verticalAlign": 1
+        }
+      ],
+      "_color": {
+        "__type__": "cc.Color",
+        "r": 163,
+        "g": 30,
+        "b": 30
+      },
+      "_contentSize": {
+        "__type__": "cc.Size",
+        "width": 266.74,
+        "height": 50.4
+      },
+      "_position": {
+        "__type__": "cc.Vec3",
+        "x": -49.694,
+        "y": 168.659
       },
       "_scale": {
         "__type__": "cc.Vec3",

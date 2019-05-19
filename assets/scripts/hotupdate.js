@@ -81,12 +81,12 @@ cc.Class({
         this._updating = true;
     },
 
-    findNewVersion: function(){
+    findNewVersion: function(){ // step 5 发现新版本后清理回调
         this._am.setEventCallback(null);
         this._updating = false;
     },
 
-    realUpdate: function(){
+    realUpdate: function(){ // step 6 重新注册开始真正更新
         if(this._am && !this._updating){
             this._am.setEventCallback(this.checkCb.bind(this));
             if(this._am.getState() == jsb.AssetsManager.State.UNINITED){
@@ -101,7 +101,7 @@ cc.Class({
         }
     },
 
-    checkCb: function(event){ // step 5.热更事件回调
+    checkCb: function(event){ // step 7.热更事件回调
         cc.log("code =", event.getEventCode());
 
         var needRestart = false;
@@ -158,7 +158,7 @@ cc.Class({
                 this.lbl_update_status.string = "解压错误" + event.getMessage();
                 break;
 
-            case jsb.EventAssetsManager.NEW_VERSION_FOUND: // 进大厅就更新了能用上不??
+            case jsb.EventAssetsManager.NEW_VERSION_FOUND: 
                 this.lbl_update_status.string = "发现新版本，点击更新!";
                 this.findNewVersion();
                 this.realUpdate();
@@ -172,12 +172,12 @@ cc.Class({
             var searchPaths = jsb.fileUtils.getSearchPaths();
             var newPaths = this._am.getLocalManifest().getSearchPaths(); // 热更路径
             cc.log("热更存储路径newPaths=", newPaths);
-            Array.prototype.unshift.apply(searchPaths, newPaths);  // step 6. 设置热更路径为第一搜索路径
+            Array.prototype.unshift.apply(searchPaths, newPaths);  // step 8. 设置热更路径为第一搜索路径
              //搜索路径序列化
              cc.sys.localStorage.setItem('HotUpdateSearchPaths', JSON.stringify(searchPaths));
             jsb.fileUtils.setSearchPaths(searchPaths);
             cc.audioEngine.stopAll();
-            cc.game.restart(); // step 7.热更完成重启游戏
+            cc.game.restart(); // step 9.热更完成重启游戏
         }
     },
 

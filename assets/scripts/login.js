@@ -10,7 +10,7 @@ cc.Class({
     // onLoad () {},
 
     start () {
-        this.lbl_scene_tag.string = "登陆场景哈";
+        this.lbl_scene_tag.string = "登陆场景哈马奶提";
     },
 
     onClick: function(event, customEventData){

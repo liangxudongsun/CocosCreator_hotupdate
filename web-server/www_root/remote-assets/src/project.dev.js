@@ -51,6 +51,8 @@ window.__require = function e(t, n, r) {
       },
       onLoad: function onLoad() {
         if (!cc.sys.isNative) return;
+        var searchPaths = jsb.fileUtils.getSearchPaths();
+        cc.log("\u91cd\u70b9:\u53ef\u5199\u8def\u5f84 searchPaths(\u5e94\u8be5\u5e26\u6709hotupdate)=", searchPaths);
         this._storagePath = (jsb.fileUtils ? jsb.fileUtils.getWritablePath() : "/") + "hotupdate";
         cc.log("\u70ed\u66f4\u4e0b\u6765\u6587\u4ef6\u5b58\u50a8\u7684\u53ef\u5199\u8def\u5f84 storagePath=", this._storagePath);
         this.versionCompareHandle = function(versionA, versionB) {
@@ -75,6 +77,7 @@ window.__require = function e(t, n, r) {
         this.lbl_update_status.string = "\u70b9\u51fb\u68c0\u67e5\u70ed\u66f4\u60c5\u51b5";
       },
       checkUpdate: function checkUpdate() {
+        if (!cc.sys.isNative) return;
         if (this._updating) {
           this.lbl_update_status.string = "\u6b63\u5728\u70ed\u66f4\u4e2d,\u4e0d\u8981\u91cd\u590d\u70b9\u51fb";
           return;
@@ -166,10 +169,11 @@ window.__require = function e(t, n, r) {
           return;
         }
         if (needRestart) {
-          var searchPaths = jsb.fileUtils.getSeatchPaths();
-          var newPaths = this._am.getLocalManifest().getSeatchPaths();
+          var searchPaths = jsb.fileUtils.getSearchPaths();
+          var newPaths = this._am.getLocalManifest().getSearchPaths();
           cc.log("\u70ed\u66f4\u5b58\u50a8\u8def\u5f84newPaths=", newPaths);
           Array.prototype.unshift.apply(searchPaths, newPaths);
+          cc.sys.localStorage.setItem("HotUpdateSearchPaths", JSON.stringify(searchPaths));
           jsb.fileUtils.setSearchPaths(searchPaths);
           cc.audioEngine.stopAll();
           cc.game.restart();
@@ -191,7 +195,7 @@ window.__require = function e(t, n, r) {
         lbl_scene_tag: cc.Label
       },
       start: function start() {
-        this.lbl_scene_tag.string = "\u767b\u9646\u573a\u666f\u54c8";
+        this.lbl_scene_tag.string = "\u767b\u9646\u573a\u666f\u54c8\u9a6c\u5976\u63d0";
       },
       onClick: function onClick(event, customEventData) {
         "btn_go_game" == customEventData && cc.director.loadScene("game");
