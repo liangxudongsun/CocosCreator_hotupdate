@@ -102,7 +102,7 @@ node version_generator.js -v 1.0.5 -u http://192.168.3.2:5555/remote-assets/ -s 
 
 *  10)打开apk，检查更新即可
 
-5)更新效果
+## 6)更新效果
 *  最开始的登陆界面图
 
 ![](./imgs/1.jpg)
