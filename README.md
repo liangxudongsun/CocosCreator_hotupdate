@@ -63,7 +63,7 @@ node version_generator.js -v 1.0.1 -u http://192.168.3.2:5555/remote-assets/ -s 
 *  3)修改:/Users/jianan/Documents/hotupdatev211_demo/build/jsb-default/main.js文件 
 
 ```
-在最开头加内容:
+在最开头加内容(main.js要被打包到android包，因此，这样修改后，保证android包里面的文件一定设置了搜索路径):
 if (jsb) {  // cc.sys.jsb发现在mac模拟器上找不到,因此写jsb
     var hotUpdateSearchPaths = localStorage.getItem('HotUpdateSearchPaths');
     if (hotUpdateSearchPaths) {
